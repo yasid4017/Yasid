@@ -1,0 +1,1091 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lua Obfuscator - Kunci Script</title>
+    <style>
+        :root {
+            --primary: #ff6b35;
+            --primary-dark: #e55a2b;
+            --secondary: #8b4513;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --bg-color: #1a1a2e;
+            --card-bg: #16213e;
+            --text-color: #e2e8f0;
+            --border-color: #0f3460;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+
+        body {
+            background: 
+                linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%),
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 10px,
+                    rgba(255, 107, 53, 0.1) 10px,
+                    rgba(255, 107, 53, 0.1) 20px
+                );
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Background text pattern */
+        body::before {
+            content: "BY YASID TADASHE";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-size: 120px;
+            font-weight: bold;
+            color: rgba(255, 107, 53, 0.03);
+            z-index: -1;
+            display: flex;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            line-height: 1;
+            pointer-events: none;
+            transform: rotate(-45deg);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            animation: floatText 20s linear infinite;
+        }
+
+        @keyframes floatText {
+            0% { transform: rotate(-45deg) translateY(0); }
+            100% { transform: rotate(-45deg) translateY(-200px); }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header Author */
+        .author-header {
+            background: linear-gradient(135deg, #16213e, #0f3460);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: center;
+            border: 2px solid #ff6b35;
+            box-shadow: 0 8px 32px rgba(255, 107, 53, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .author-header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,107,53,0.1) 0%, transparent 70%);
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .author-logo {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #ff6b35;
+            text-shadow: 0 0 20px rgba(255, 107, 53, 0.7);
+            animation: fire 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes fire {
+            0% { 
+                transform: scale(1);
+                text-shadow: 0 0 20px rgba(255, 107, 53, 0.7),
+                             0 0 30px rgba(255, 107, 53, 0.5),
+                             0 0 40px rgba(255, 107, 53, 0.3);
+            }
+            100% { 
+                transform: scale(1.1);
+                text-shadow: 0 0 25px rgba(255, 107, 53, 0.9),
+                             0 0 35px rgba(255, 107, 53, 0.7),
+                             0 0 45px rgba(255, 107, 53, 0.5);
+            }
+        }
+
+        .author-name {
+            font-size: 2.2rem;
+            color: #ff6b35;
+            margin-bottom: 15px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .author-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .author-link {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            background: rgba(22, 33, 62, 0.8);
+            border: 1px solid #ff6b35;
+            backdrop-filter: blur(10px);
+        }
+
+        .author-link:hover {
+            color: #ff6b35;
+            background: rgba(255, 107, 53, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+        }
+
+        .youtube-logo {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #FF0000, #CC0000);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .whatsapp-logo {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        /* Main App Header */
+        .app-header {
+            text-align: center;
+            margin-bottom: 35px;
+            padding: 30px;
+            background: linear-gradient(135deg, #16213e, #0f3460);
+            color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            border: 2px solid #ff6b35;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #ff6b35, transparent);
+            animation: slide 3s linear infinite;
+        }
+
+        @keyframes slide {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .sion-title {
+            font-size: 2.8rem;
+            margin-bottom: 15px;
+            color: #ff6b35;
+            text-shadow: 0 2px 10px rgba(255, 107, 53, 0.5);
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .app-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            color: #ffd700;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .upload-area {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 35px;
+            text-align: center;
+            margin-bottom: 30px;
+            border: 2px dashed #ff6b35;
+            transition: all 0.3s ease;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        .upload-area.active {
+            border-color: #ffd700;
+            background: rgba(22, 33, 62, 0.9);
+            box-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #ff6b35;
+            filter: drop-shadow(0 0 10px rgba(255, 107, 53, 0.5));
+        }
+
+        .upload-text h3 {
+            color: #ffd700;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .upload-text p {
+            color: #94a3b8;
+            font-size: 1rem;
+            margin-bottom: 25px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-label {
+            display: inline-block;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #ff6b35, #e55a2b);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+        }
+
+        .file-label:hover {
+            background: linear-gradient(135deg, #e55a2b, #ff6b35);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.6);
+        }
+
+        .file-info {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(15, 52, 96, 0.6);
+            border-radius: 8px;
+            border: 1px solid #ff6b35;
+            display: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .file-info.show {
+            display: block;
+        }
+
+        .file-name {
+            font-weight: 600;
+            color: #ffd700;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .file-size {
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        .action-area {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff6b35, #e55a2b);
+            color: white;
+            border: 2px solid #ff6b35;
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.6);
+            background: linear-gradient(135deg, #e55a2b, #ff6b35);
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #059669, #047857);
+            color: white;
+            border: 2px solid #065f46;
+            padding: 14px 30px;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.4);
+        }
+
+        .btn-download:hover {
+            transform: translateY(-3px);
+            background: linear-gradient(135deg, #047857, #065f46);
+            box-shadow: 0 6px 20px rgba(5, 150, 105, 0.6);
+        }
+
+        .result-area {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--border-color);
+            display: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .result-area.show {
+            display: block;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #ff6b35;
+        }
+
+        .result-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffd700;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .code-container {
+            position: relative;
+            background: #0f172a;
+            border-radius: 10px;
+            border: 2px solid #ff6b35;
+            overflow: hidden;
+            margin-bottom: 25px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+        }
+
+        .code-header {
+            background: linear-gradient(135deg, #16213e, #0f3460);
+            padding: 15px 25px;
+            border-bottom: 2px solid #ff6b35;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .code-title {
+            color: #ffd700;
+            font-weight: 600;
+            font-size: 1rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .code-content {
+            padding: 25px;
+            max-height: 500px;
+            overflow-y: auto;
+            background: #0a0f1c;
+        }
+
+        .lua-code {
+            width: 100%;
+            min-height: 350px;
+            background: transparent;
+            border: none;
+            color: #e2e8f0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.4;
+            resize: none;
+            outline: none;
+            white-space: pre;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 25px 0;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 107, 53, 0.2);
+            border-left-color: #ff6b35;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.3);
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 20px 25px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: linear-gradient(135deg, rgba(5, 150, 105, 0.9), rgba(4, 120, 87, 0.9));
+            border-color: #047857;
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.9), rgba(185, 28, 28, 0.9));
+            border-color: #b91c1c;
+        }
+
+        .download-area {
+            text-align: center;
+            padding: 25px;
+            background: rgba(15, 52, 96, 0.6);
+            border-radius: 10px;
+            border: 2px solid #ff6b35;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Styling untuk generator nama ASCII */
+        .ascii-name-area {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 2px solid var(--border-color);
+            display: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .ascii-name-area.show {
+            display: block;
+        }
+
+        .ascii-name-title {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #ffd700;
+            font-weight: 600;
+            font-size: 1.3rem;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .ascii-input-group {
+            margin-bottom: 25px;
+        }
+
+        .ascii-input-label {
+            display: block;
+            margin-bottom: 12px;
+            color: #ffd700;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .ascii-input-field {
+            width: 100%;
+            padding: 15px 20px;
+            background: #0f172a;
+            border: 2px solid #ff6b35;
+            border-radius: 8px;
+            color: #e2e8f0;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .ascii-input-field:focus {
+            border-color: #ffd700;
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
+            background: #0a0f1c;
+        }
+
+        .ascii-input-field::placeholder {
+            color: #64748b;
+        }
+
+        .ascii-preview {
+            background: #0a0f1c;
+            border: 2px solid #ff6b35;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            overflow-x: auto;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+        }
+
+        .ascii-text {
+            color: #ff6b35;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.2;
+            white-space: pre;
+            margin: 0;
+            text-shadow: 0 0 10px rgba(255, 107, 53, 0.7);
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+
+        /* Preview Script Area */
+        .preview-area {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 2px solid var(--border-color);
+            display: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .preview-area.show {
+            display: block;
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #ff6b35;
+        }
+
+        .preview-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffd700;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        @media (max-width: 768px) {
+            .result-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .sion-title {
+                font-size: 2.2rem;
+            }
+
+            .ascii-text {
+                font-size: 10px;
+            }
+
+            .author-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            body::before {
+                font-size: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Author -->
+        <div class="author-header">
+            <div class="author-logo">🔒</div>
+            <div class="author-name">YASID TADASHE</div>
+            <div class="author-links">
+                <a href="https://whatsapp.com/channel/0029Vb9pjAkIt5rwYIuSVn1I" class="author-link" target="_blank">
+                    <div class="whatsapp-logo">W</div>
+                    <span>SALURAN WHATSAPP</span>
+                </a>
+                <a href="https://youtube.com/@yasidtadashe?si=_hevYIs5Y9UkdRQa" class="author-link" target="_blank">
+                    <div class="youtube-logo">YT</div>
+                    <span>YOUTUBE: @yasidtadashe</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- Main App Header -->
+        <div class="app-header">
+            <div class="sion-title">LUA OBFUSCATOR</div>
+            <p>KUNCI SCRIPT LUA LU DISINI ANJING</p>
+        </div>
+
+        <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">📁</div>
+            <div class="upload-text">
+                <h3>UPLOAD SCRIPT LUA</h3>
+                <p>Pilih file .lua untuk dikunci</p>
+            </div>
+            
+            <input type="file" id="fileInput" class="file-input" accept=".lua">
+            <label for="fileInput" class="file-label">
+                📁 PILIH FILE LUA
+            </label>
+            
+            <div class="file-info" id="fileInfo">
+                <div class="file-name" id="fileName"></div>
+                <div class="file-size" id="fileSize"></div>
+            </div>
+        </div>
+
+        <!-- Preview Script Area -->
+        <div class="preview-area" id="previewArea">
+            <div class="preview-header">
+                <h2 class="preview-title">PREVIEW SCRIPT ASLI</h2>
+            </div>
+            
+            <div class="code-container">
+                <div class="code-header">
+                    <div class="code-title" id="previewFileName">script.lua</div>
+                </div>
+                <div class="code-content">
+                    <textarea class="lua-code" id="previewCode" readonly></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Area Generator Nama ASCII -->
+        <div class="ascii-name-area" id="asciiNameArea">
+            <div class="ascii-name-title">BUAT NAMA SCRIPT ASCII ART</div>
+            
+            <div class="ascii-input-group">
+                <label class="ascii-input-label">MASUKKAN NAMA SCRIPT</label>
+                <input type="text" id="asciiNameInput" class="ascii-input-field" placeholder="Contoh: YASID" maxlength="8">
+            </div>
+
+            <div class="ascii-preview">
+                <pre class="ascii-text" id="asciiPreview">██╗   ██╗ █████╗ ███████╗██╗██████╗ 
+╚██╗ ██╔╝██╔══██╗██╔════╝██║██╔══██╗
+ ╚████╔╝ ███████║███████╗██║██║  ██║
+  ╚██╔╝  ██╔══██║╚════██║██║██║  ██║
+   ██║   ██║  ██║███████║██║██████╔╝
+   ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝╚═════╝ </pre>
+            </div>
+        </div>
+
+        <div class="action-area">
+            <button class="btn btn-primary" id="obfuscateBtn" disabled>
+                🔐 KUNCI SCRIPT
+            </button>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Melakukan enkripsi Base64 + XOR...</p>
+        </div>
+
+        <div class="result-area" id="resultArea">
+            <div class="result-header">
+                <h2 class="result-title">SCRIPT TERKUNCI</h2>
+            </div>
+            
+            <div class="code-container">
+                <div class="code-header">
+                    <div class="code-title" id="outputFileName">encrypted_script.lua</div>
+                </div>
+                <div class="code-content">
+                    <textarea class="lua-code" id="outputCode" readonly></textarea>
+                </div>
+            </div>
+            
+            <div class="download-area">
+                <button class="btn btn-download" id="downloadBtn">
+                    📥 DOWNLOAD SCRIPT TERKUNCI
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // Elemen DOM
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const fileInfo = document.getElementById('fileInfo');
+        const fileName = document.getElementById('fileName');
+        const fileSize = document.getElementById('fileSize');
+        const previewArea = document.getElementById('previewArea');
+        const previewCode = document.getElementById('previewCode');
+        const previewFileName = document.getElementById('previewFileName');
+        const asciiNameArea = document.getElementById('asciiNameArea');
+        const asciiNameInput = document.getElementById('asciiNameInput');
+        const asciiPreview = document.getElementById('asciiPreview');
+        const obfuscateBtn = document.getElementById('obfuscateBtn');
+        const outputCode = document.getElementById('outputCode');
+        const outputFileName = document.getElementById('outputFileName');
+        const resultArea = document.getElementById('resultArea');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const notification = document.getElementById('notification');
+        const loading = document.getElementById('loading');
+
+        // Variabel untuk menyimpan nama file asli dan ASCII art
+        let originalFileName = '';
+        let selectedAsciiArt = '';
+        let originalScriptContent = '';
+        
+        // Font ASCII art yang SEMPURNA dengan spasi yang pas
+        const asciiFont = {
+            'A': [' █████╗ ', '██╔══██╗', '███████║', '██╔══██║', '██║  ██║', '╚═╝  ╚═╝'],
+            'B': ['██████╗ ', '██╔══██╗', '██████╔╝', '██╔══██╗', '██████╔╝', '╚═════╝ '],
+            'C': [' ██████╗', '██╔════╝', '██║     ', '██║     ', '╚██████╗', ' ╚═════╝'],
+            'D': ['██████╗ ', '██╔══██╗', '██║  ██║', '██║  ██║', '██████╔╝', '╚═════╝ '],
+            'E': ['███████╗', '██╔════╝', '█████╗  ', '██╔══╝  ', '███████╗', '╚══════╝'],
+            'F': ['███████╗', '██╔════╝', '█████╗  ', '██╔══╝  ', '██║     ', '╚═╝     '],
+            'G': [' ██████╗ ', '██╔════╝ ', '██║  ███╗', '██║   ██║', '╚██████╔╝', ' ╚═════╝ '],
+            'H': ['██╗  ██╗', '██║  ██║', '███████║', '██╔══██║', '██║  ██║', '╚═╝  ╚═╝'],
+            'I': ['██╗', '██║', '██║', '██║', '██║', '╚═╝'],
+            'J': ['     ██╗', '     ██║', '     ██║', '██╗  ██║', '╚█████╔╝', ' ╚════╝ '],
+            'K': ['██╗  ██╗', '██║ ██╔╝', '█████╔╝ ', '██╔═██╗ ', '██║  ██╗', '╚═╝  ╚═╝'],
+            'L': ['██╗     ', '██║     ', '██║     ', '██║     ', '███████╗', '╚══════╝'],
+            'M': ['███╗   ███╗', '████╗ ████║', '██╔████╔██║', '██║╚██╔╝██║', '██║ ╚═╝ ██║', '╚═╝     ╚═╝'],
+            'N': ['███╗   ██╗', '████╗  ██║', '██╔██╗ ██║', '██║╚██╗██║', '██║ ╚████║', '╚═╝  ╚═══╝'],
+            'O': [' ██████╗ ', '██╔═══██╗', '██║   ██║', '██║   ██║', '╚██████╔╝', ' ╚═════╝ '],
+            'P': ['██████╗ ', '██╔══██╗', '██████╔╝', '██╔═══╝ ', '██║     ', '╚═╝     '],
+            'Q': [' ██████╗ ', '██╔═══██╗', '██║   ██║', '██║▄▄ ██║', '╚██████╔╝', ' ╚══▀▀═╝ '],
+            'R': ['██████╗ ', '██╔══██╗', '██████╔╝', '██╔══██╗', '██║  ██║', '╚═╝  ╚═╝'],
+            'S': ['███████╗', '██╔════╝', '███████╗', '╚════██║', '███████║', '╚══════╝'],
+            'T': ['████████╗', '╚══██╔══╝', '   ██║   ', '   ██║   ', '   ██║   ', '   ╚═╝   '],
+            'U': ['██╗   ██╗', '██║   ██║', '██║   ██║', '██║   ██║', '╚██████╔╝', ' ╚═════╝ '],
+            'V': ['██╗   ██╗', '██║   ██║', '██║   ██║', '╚██╗ ██╔╝', ' ╚████╔╝ ', '  ╚═══╝  '],
+            'W': ['██╗    ██╗', '██║    ██║', '██║ █╗ ██║', '██║███╗██║', '╚███╔███╔╝', ' ╚══╝╚══╝ '],
+            'X': ['██╗  ██╗', '╚██╗██╔╝', ' ╚███╔╝ ', ' ██╔██╗ ', '██╔╝ ██╗', '╚═╝  ╚═╝'],
+            'Y': ['██╗   ██╗', '╚██╗ ██╔╝', ' ╚████╔╝ ', '  ╚██╔╝  ', '   ██║   ', '   ╚═╝   '],
+            'Z': ['███████╗', '╚══███╔╝', '  ███╔╝ ', ' ███╔╝  ', '███████╗', '╚══════╝'],
+            '0': [' ██████╗ ', '██╔═══██╗', '██║   ██║', '██║   ██║', '╚██████╔╝', ' ╚═════╝ '],
+            '1': ['  ██╗', ' ███║', ' ╚██║', '  ██║', '  ██║', '  ╚═╝'],
+            '2': ['██████╗ ', '╚════██╗', ' █████╔╝', '██╔═══╝ ', '███████╗', '╚══════╝'],
+            '3': ['██████╗ ', '╚════██╗', ' █████╔╝', ' ╚═══██╗', '██████╔╝', '╚═════╝ '],
+            '4': ['██╗  ██╗', '██║  ██║', '███████║', '╚════██║', '     ██║', '     ╚═╝'],
+            '5': ['███████╗', '██╔════╝', '███████╗', '╚════██║', '███████║', '╚══════╝'],
+            '6': [' ██████╗ ', '██╔════╝ ', '███████╗ ', '██╔═══██╗', '╚██████╔╝', ' ╚═════╝ '],
+            '7': ['███████╗', '╚══███╔╝', '   ███╔╝ ', '  ███╔╝  ', ' ███╔╝   ', ' ╚═╝     '],
+            '8': [' █████╗ ', '██╔══██╗', '╚█████╔╝', '██╔══██╗', '╚█████╔╝', ' ╚════╝ '],
+            '9': [' █████╗ ', '██╔══██╗', '╚██████║', ' ╚═══██║', ' █████╔╝', ' ╚════╝ '],
+            ' ': ['  ', '  ', '  ', '  ', '  ', '  ']
+        };
+
+        // Event listeners
+        fileInput.addEventListener('change', handleFileSelect);
+        asciiNameInput.addEventListener('input', generateAsciiArt);
+        obfuscateBtn.addEventListener('click', obfuscateFile);
+        downloadBtn.addEventListener('click', downloadFile);
+
+        // Fungsi untuk menangani pemilihan file
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            
+            if (!file) return;
+            
+            // Cek ekstensi file
+            if (!file.name.toLowerCase().endsWith('.lua')) {
+                showNotification('Harap pilih file Lua (.lua)', 'error');
+                resetFileInput();
+                return;
+            }
+            
+            // Simpan nama file asli
+            originalFileName = file.name.replace('.lua', '');
+            
+            // Tampilkan informasi file
+            fileName.textContent = file.name;
+            fileSize.textContent = formatFileSize(file.size);
+            fileInfo.classList.add('show');
+            
+            // Aktifkan area upload
+            uploadArea.classList.add('active');
+            
+            // Baca file untuk preview
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                originalScriptContent = e.target.result;
+                previewCode.value = originalScriptContent;
+                previewFileName.textContent = file.name;
+                previewArea.classList.add('show');
+                
+                // Tampilkan area ASCII name
+                asciiNameArea.classList.add('show');
+                
+                // Set nilai default untuk input nama
+                asciiNameInput.value = originalFileName;
+                
+                // Generate ASCII art awal
+                generateAsciiArt();
+                
+                // Aktifkan tombol obfuscate
+                obfuscateBtn.disabled = false;
+                
+                showNotification('File Lua berhasil dipilih', 'success');
+            };
+            reader.readAsText(file);
+        }
+
+        // Fungsi untuk generate ASCII art yang SEMPURNA dengan spasi pas
+        function generateAsciiArt() {
+            const text = asciiNameInput.value.toUpperCase() || 'YASID';
+            let asciiArt = '';
+            
+            // Generate ASCII art dengan spasi yang pas
+            for (let line = 0; line < 6; line++) {
+                for (let i = 0; i < text.length; i++) {
+                    const char = text[i];
+                    if (asciiFont[char]) {
+                        asciiArt += asciiFont[char][line];
+                    } else {
+                        asciiArt += '        ';
+                    }
+                }
+                asciiArt += '\n';
+            }
+            
+            // Update preview
+            asciiPreview.textContent = asciiArt;
+            selectedAsciiArt = asciiArt;
+        }
+
+        // Fungsi untuk obfuscate file Lua
+        function obfuscateFile() {
+            if (!originalScriptContent) {
+                showNotification('Tidak ada file yang dipilih', 'error');
+                return;
+            }
+            
+            // Tampilkan loading
+            loading.classList.add('show');
+            obfuscateBtn.disabled = true;
+            
+            // Simulasi proses obfuscation
+            setTimeout(() => {
+                // Proses obfuscation dengan Base64 + XOR
+                const obfuscatedCode = base64XorObfuscation(originalScriptContent);
+                
+                // Tampilkan hasil
+                outputCode.value = obfuscatedCode;
+                resultArea.classList.add('show');
+                
+                // Sembunyikan loading
+                loading.classList.remove('show');
+                obfuscateBtn.disabled = false;
+                
+                showNotification('Script berhasil dikunci!', 'success');
+                
+                // Scroll ke hasil
+                resultArea.scrollIntoView({ behavior: 'smooth' });
+            }, 1500);
+        }
+
+        // Fungsi Base64 + XOR Obfuscation
+        function base64XorObfuscation(code) {
+            // Fungsi Base64 encode (standar)
+            function base64Encode(str) {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+                let result = '';
+                let i = 0;
+                
+                while (i < str.length) {
+                    const a = str.charCodeAt(i++);
+                    const b = i < str.length ? str.charCodeAt(i++) : 0;
+                    const c = i < str.length ? str.charCodeAt(i++) : 0;
+                    
+                    const bits = (a << 16) | (b << 8) | c;
+                    
+                    result += chars.charAt((bits >> 18) & 63);
+                    result += chars.charAt((bits >> 12) & 63);
+                    result += chars.charAt((bits >> 6) & 63);
+                    result += chars.charAt(bits & 63);
+                }
+                
+                // Padding
+                const padding = str.length % 3;
+                if (padding === 1) {
+                    result = result.slice(0, -2) + '==';
+                } else if (padding === 2) {
+                    result = result.slice(0, -1) + '=';
+                }
+                
+                return result;
+            }
+
+            // Fungsi XOR cipher
+            function xorCipher(str, key) {
+                let result = '';
+                for (let i = 0; i < str.length; i++) {
+                    result += String.fromCharCode(str.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+                }
+                return result;
+            }
+
+            // Key untuk XOR
+            const xorKey = "yasid";
+            
+            // Enkripsi dengan XOR
+            const xoredCode = xorCipher(code, xorKey);
+            
+            // Encode ke Base64
+            const base64Encoded = base64Encode(xoredCode);
+            
+            // FORMAT YANG DIMINTA: --[[ + 1 garis baru + ASCII art + 1 garis baru + ]]-- + 2 garis baru + script
+            const header = `--[[
+${selectedAsciiArt}
+]]--
+
+local yasid="${base64Encoded}"local yasid_key="${xorKey}"local yasid_chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"local function yasid_decode(t)local r,i={},1 while i<=#t do local c1,c2,c3,c4=t:sub(i,i),t:sub(i+1,i+1),t:sub(i+2,i+2),t:sub(i+3,i+3)local a,b=yasid_chars:find(c1)-1,yasid_chars:find(c2)-1 local c=(c3=="=")and 0 or yasid_chars:find(c3)-1 local d=(c4=="=")and 0 or yasid_chars:find(c4)-1 local n=a*2^18+b*2^12+c*2^6+d table.insert(r,string.char(math.floor(n/2^16)%256))if c3~="=" then table.insert(r,string.char(math.floor(n/2^8)%256))end if c4~="=" then table.insert(r,string.char(n%256))end i=i+4 end return table.concat(r)end local function yasid_xor(a,b)local r=0 for k=0,7 do local A,B=a%2,b%2 if A~=B then r=r+2^k end a,b=math.floor(a/2),math.floor(b/2)end return r end local yasid_tmp=yasid_decode(yasid)local yasid_buf={}for i=1,#yasid_tmp do table.insert(yasid_buf,string.char(yasid_xor(yasid_tmp:byte(i),yasid_key:byte((i-1)%#yasid_key+1))))end local yasid_script=table.concat(yasid_buf)local yasid_run=(loadstring or load)yasid_run(yasid_script)()`;
+
+            return header;
+        }
+
+        // Fungsi untuk download file
+        function downloadFile() {
+            const obfuscatedCode = outputCode.value;
+            
+            if (!obfuscatedCode) {
+                showNotification('Tidak ada kode untuk diunduh', 'error');
+                return;
+            }
+            
+            const asciiName = asciiNameInput.value || originalFileName || 'YASID';
+            // FORMAT: [YASID] nama_script_asli.lua
+            const fileName = `[YASID] ${originalFileName}.lua`;
+            const blob = new Blob([obfuscatedCode], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            showNotification('File berhasil diunduh', 'success');
+        }
+
+        // Fungsi untuk reset file input
+        function resetFileInput() {
+            fileInput.value = '';
+            fileInfo.classList.remove('show');
+            uploadArea.classList.remove('active');
+            previewArea.classList.remove('show');
+            asciiNameArea.classList.remove('show');
+            resultArea.classList.remove('show');
+            obfuscateBtn.disabled = true;
+        }
+
+        // Fungsi untuk menampilkan notifikasi
+        function showNotification(message, type) {
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Fungsi untuk format ukuran file
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Inisialisasi awal
+        generateAsciiArt();
+    </script>
+</body>
+</html>
